@@ -21,10 +21,9 @@ export function Showcase() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const sections = gsap.utils.toArray<HTMLElement>(".showcase-panel");
       if (!track.current) return;
       const total = track.current.scrollWidth - window.innerWidth;
-      gsap.to(track.current, {
+      const tween = gsap.to(track.current, {
         x: -total,
         ease: "none",
         scrollTrigger: {
@@ -36,12 +35,12 @@ export function Showcase() {
           invalidateOnRefresh: true,
         },
       });
-      sections.forEach((s) => {
+      gsap.utils.toArray<HTMLElement>(".showcase-panel").forEach((s) => {
         const img = s.querySelector("img");
         if (img) {
           gsap.fromTo(img, { scale: 1.15 }, {
             scale: 1, ease: "none",
-            scrollTrigger: { trigger: s, containerAnimation: ScrollTrigger.getAll()[0], start: "left right", end: "right left", scrub: true },
+            scrollTrigger: { trigger: s, containerAnimation: tween, start: "left right", end: "right left", scrub: true },
           });
         }
       });
