@@ -2,12 +2,21 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const items = [
-  { n: 16, suffix: "+", label: "Years of practice", body: "A steady, slow studio." },
-  { n: 340, suffix: "", label: "Homes finished", body: "Each a singular composition." },
-  { n: 27, suffix: "", label: "Quarries sourced", body: "From Carrara to Rajasthan." },
-  { n: 100, suffix: "%", label: "Hand-laid", body: "Every joint cut on site." },
-  { n: 5, suffix: "yr", label: "Studio warranty", body: "Quiet confidence in our work." },
+gsap.registerPlugin(ScrollTrigger);
+
+interface StatItem {
+  n: number;
+  suffix: string;
+  label: string;
+  body: string;
+}
+
+const items: StatItem[] = [
+  { n: 16, suffix: "+", label: "Years of practice", body: "A steady, slow studio building spaces meant to outlive trends." },
+  { n: 340, suffix: "", label: "Homes finished", body: "Each a singular, highly architectural composition." },
+  { n: 27, suffix: "", label: "Quarries sourced", body: "Direct, meticulous extractions from Carrara to Rajasthan." },
+  { n: 100, suffix: "%", label: "Hand-laid", body: "Every seam aligned, every joint cut manually on site." },
+  { n: 5, suffix: "yr", label: "Studio warranty", body: "A quiet, absolute confidence in our structural masonry." },
 ];
 
 export function WhyTriveni() {
@@ -15,50 +24,100 @@ export function WhyTriveni() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".stat-row").forEach((row) => {
+      const rows = gsap.utils.toArray<HTMLElement>(".stat-row");
+
+      rows.forEach((row) => {
         const num = row.querySelector(".stat-num") as HTMLElement;
-        const value = Number(num?.dataset.value || 0);
-        const suffix = num?.dataset.suffix || "";
+        if (!num) return;
+
+        const value = Number(num.dataset.value || 0);
+        const suffix = num.dataset.suffix || "";
         const obj = { v: 0 };
-        gsap.from(row, {
-          y: 50, opacity: 0, duration: 1, ease: "expo.out",
-          scrollTrigger: { trigger: row, start: "top 85%" },
+
+        // Create a single, unified timeline per row to prevent layout shifting/glitches
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: row,
+            start: "top 88%",
+            toggleActions: "play none none none",
+          },
         });
-        gsap.to(obj, {
-          v: value, duration: 2, ease: "expo.out",
-          scrollTrigger: { trigger: row, start: "top 80%" },
-          onUpdate: () => { if (num) num.textContent = Math.round(obj.v) + suffix; },
-        });
+
+        tl.from(row.querySelectorAll(".animate-cell"), {
+          y: 30,
+          opacity: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          stagger: 0.08,
+        }).to(
+          obj,
+          {
+            v: value,
+            duration: 1.6,
+            ease: "power2.out",
+            onUpdate: () => {
+              num.textContent = Math.round(obj.v) + suffix;
+            },
+          },
+          "-=1.0" // Starts counting smoothly while text is finishing its lift
+        );
       });
     }, root);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={root} className="relative bg-foreground text-background py-32 md:py-48 overflow-hidden">
-      <div className="mx-auto max-w-[1600px] px-6 md:px-12">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
-          <h2 className="font-display text-5xl md:text-7xl leading-[1.02]">
-            Why <em className="text-sand">Triveni.</em>
-          </h2>
-          <p className="max-w-sm text-background/60">
-            Five quiet measures of the way we work.
-          </p>
+    <section
+      ref={root}
+      className="relative bg-[#FBF9F6] text-[#1C1B19] py-28 md:py-44 overflow-hidden selection:bg-[#C2B29F]/30"
+    >
+      <div className="mx-auto max-w-[1440px] px-6 md:px-16">
+        
+        {/* Section Header: Intentional Editorial Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24 md:mb-36">
+          <div className="md:col-span-7">
+            <h2 className="font-display text-5xl md:text-8xl font-light tracking-tight leading-[0.95]">
+              Why <br />
+              <em className="font-serif italic font-normal text-[#8C7A65]">Triveni.</em>
+            </h2>
+          </div>
+          <div className="md:col-span-4 md:col-start-9 flex flex-col justify-end mt-6 md:mt-0">
+            <p className="text-sm md:text-base font-normal text-[#1C1B19]/60 leading-relaxed tracking-wide">
+              Five quiet measures of the way we source materials, refine details, and practice our craft.
+            </p>
+          </div>
         </div>
 
-        <div className="border-t border-background/20">
+        {/* Premium List Layout */}
+        <div className="border-t border-[#1C1B19]/10">
           {items.map((it, i) => (
-            <div key={it.label} className="stat-row grid grid-cols-12 items-center gap-6 py-10 md:py-14 border-b border-background/20">
-              <div className="col-span-2 md:col-span-1 text-[10px] uppercase tracking-[0.3em] text-background/40">
+            <div
+              key={it.label}
+              className="stat-row group relative grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-x-8 py-10 md:py-14 border-b border-[#1C1B19]/10 transition-colors duration-500 hover:bg-[#1C1B19]/[0.01]"
+            >
+              {/* Subtle architectural hover line background accent */}
+              <div className="absolute inset-x-0 bottom-0 h-[1px] bg-[#8C7A65] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100" />
+
+              {/* Index */}
+              <div className="animate-cell md:col-span-1 text-[11px] font-mono tracking-widest text-[#1C1B19]/40 self-start pt-2">
                 0{i + 1}
               </div>
-              <div className="col-span-10 md:col-span-5 font-display text-6xl md:text-8xl">
-                <span className="stat-num tabular-nums" data-value={it.n} data-suffix={it.suffix}>0</span>
+
+              {/* Number: Asymmetric width allocation */}
+              <div className="animate-cell md:col-span-4 font-display text-6xl md:text-8xl font-light tracking-tighter leading-none self-start transition-transform duration-500 ease-out group-hover:translate-x-1">
+                <span className="stat-num tabular-nums" data-value={it.n} data-suffix={it.suffix}>
+                  {it.n}
+                </span>
               </div>
-              <div className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.3em] text-background/60">
+
+              {/* Label */}
+              <div className="animate-cell md:col-span-3 text-[11px] font-bold uppercase tracking-[0.25em] text-[#1C1B19]/80 self-start pt-3">
                 {it.label}
               </div>
-              <div className="col-span-12 md:col-span-3 text-background/70">
+
+              {/* Body Paragraph: Extended for editorial substance */}
+              <div className="animate-cell md:col-span-4 text-sm md:text-base text-[#1C1B19]/50 font-normal leading-relaxed self-start pt-2 max-w-sm transition-colors duration-300 group-hover:text-[#1C1B19]">
                 {it.body}
               </div>
             </div>

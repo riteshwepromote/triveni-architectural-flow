@@ -24,17 +24,17 @@ export function Navbar() {
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${
         scrolled
           ? "py-3 backdrop-blur-xl bg-background/70 border-b border-border/60"
-          : "py-6 bg-transparent"
+          : "py-6 bg-transparent text-bone"
       }`}
     >
       <nav className="mx-auto flex max-w-[1600px] items-center justify-between px-6 md:px-12">
-        <a href="#home" className="font-display text-2xl tracking-tight">
+        <a href="#home" className="font-display text-2xl tracking-tight text-white/70">
           Triveni<span className="text-accent">.</span>
         </a>
         <ul className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.28em]">
           {items.map((it) => (
             <li key={it.href}>
-              <a href={it.href} className="story-link relative hover:opacity-100 opacity-70 transition">
+              <a href={it.href} className="story-link relative hover:opacity-100 opacity-70 transition ">
                 {it.label}
               </a>
             </li>

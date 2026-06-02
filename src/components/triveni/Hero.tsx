@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
-import heroImg from "@/assets/hero.jpg";
+import heroVedio from "../../assets/heroVedio.mp4";
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -21,7 +21,7 @@ export function Hero() {
       gsap.from(".hero-cta", { opacity: 0, y: 30, duration: 1, delay: 1.7, stagger: 0.1 });
 
       // parallax + slow zoom
-      gsap.to(imgRef.current, {
+      gsap.to(videoRef.current, {
         scale: 1.18,
         yPercent: 12,
         ease: "none",
@@ -48,45 +48,67 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="home" ref={root} className="relative h-[100svh] w-full overflow-hidden bg-charcoal text-bone">
-      <img
-        ref={imgRef}
-        src={heroImg}
-        alt="Polished black granite interior, lit from above"
+    <section
+      id="home"
+      ref={root}
+      className="relative h-[100svh] w-full overflow-hidden bg-charcoal text-bone"
+    >
+      <video
+        ref={videoRef}
+        src={heroVedio}
+        autoPlay
+        muted
+        loop
         className="absolute inset-0 h-full w-full object-cover scale-105"
       />
       <div className="absolute inset-0 vignette" />
-      <div className="absolute inset-0 bg-charcoal/30" />
+      <div className="absolute inset-0 bg-charcoal/50" />
 
       {/* top meta */}
-      <div className="absolute top-28 inset-x-0 z-10 flex justify-between px-6 md:px-12 text-[10px] uppercase tracking-[0.35em] text-bone/60">
+      <div className="absolute top-28 inset-x-0 z-10 flex justify-between px-6 md:px-12 text-[10px] uppercase tracking-[0.35em] text-bone/80">
         <span className="hero-meta">Est. 2008 — Bengaluru</span>
         <span className="hero-meta hidden md:block">Vol. 01 / Studio Catalogue</span>
       </div>
 
       <div className="hero-content relative z-10 flex h-full flex-col justify-end px-6 md:px-12 pb-24 md:pb-32">
-        <div className="hero-meta text-[10px] uppercase tracking-[0.4em] text-bone/70 mb-8">
+        <div className="hero-meta text-[10px] uppercase tracking-[0.4em] text-bone/90 mb-8">
           ▌ The Granite Studio
         </div>
 
         <h1 className="font-display text-bone leading-[0.95] text-[11vw] md:text-[8.4vw]">
-          <span className="block reveal-mask"><span className="hero-line block">Great design</span></span>
-          <span className="block reveal-mask"><span className="hero-line block italic text-sand">begins with the</span></span>
-          <span className="block reveal-mask"><span className="hero-line block">right foundation.</span></span>
+          <span className="block reveal-mask">
+            <span className="hero-line block">Great design</span>
+          </span>
+          <span className="block reveal-mask">
+            <span className="hero-line block italic text-sand">begins with the</span>
+          </span>
+          <span className="block reveal-mask">
+            <span className="hero-line block">right foundation.</span>
+          </span>
         </h1>
 
         <div className="mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-10">
-          <p className="hero-meta max-w-md text-sm md:text-base text-bone/70 leading-relaxed">
-            Premium granite, marble and luxury surfaces — curated, crafted and laid by hand for the homes of those who notice detail.
+          <p className="hero-meta max-w-md text-sm md:text-base text-bone/85 leading-relaxed">
+            Premium granite, marble and luxury surfaces — curated, crafted and laid by hand for the
+            homes of those who notice detail.
           </p>
-          <div className="hero-cta flex flex-wrap gap-4">
-            <MagneticButton href="#collections" variant="solid" className="bg-bone text-charcoal">
-              Explore Collection
-            </MagneticButton>
-            <MagneticButton href="#contact" variant="ghost" className="border-bone/40 text-bone hover:bg-bone hover:text-charcoal">
-              Visit Studio
-            </MagneticButton>
-          </div>
+          <div className="hero-cta flex flex-wrap gap-4 items-center">
+  <MagneticButton
+    href="#collections"
+    variant=""
+    className="bg-bone text-charcoal font-bold px-6 py-3 rounded-none shadow-lg hover:shadow-xl transition-colors duration-300"
+  >
+    Explore Collection
+  </MagneticButton>
+  
+  <MagneticButton
+    href="#contact"
+    variant="ghost"
+    className="border border-bone/90 text-white font-bold px-6 py-3 rounded-none bg-transparent hover:bg-bone hover:text-bone shadow-lg transition-colors duration-300"
+  >
+    Visit Studio
+  </MagneticButton>
+</div>
         </div>
       </div>
 
