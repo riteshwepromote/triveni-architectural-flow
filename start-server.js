@@ -15,11 +15,8 @@ const server = createServer(async (req, res) => {
       new Request(new URL(req.url || "/", `http://${req.headers.host}`), {
         method: req.method,
         headers: req.headers,
-        body:
-          req.method !== "GET" && req.method !== "HEAD"
-            ? req
-            : undefined,
-      })
+        body: req.method !== "GET" && req.method !== "HEAD" ? req : undefined,
+      }),
     );
 
     // Send response
