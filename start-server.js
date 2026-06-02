@@ -1,27 +1,26 @@
 import { createServer } from "http";
 import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Import the Nitro server
-const { default: handler } = await import("./dist/server/server.mjs");
+// ✅ FIXED PATH
+const mod = await import("./dist/server/server/index.mjs");
+const handler = mod.default || mod.handler;
 
 const server = createServer(async (req, res) => {
   try {
-    // Forward request to the Nitro handler
     const response = await handler.fetch(
       new Request(new URL(req.url || "/", `http://${req.headers.host}`), {
         method: req.method,
         headers: req.headers,
         body: req.method !== "GET" && req.method !== "HEAD" ? req : undefined,
-      }),
+      })
     );
 
-    // Send response
     res.writeHead(response.status, Object.fromEntries(response.headers));
-    res.end(await response.arrayBuffer());
+    res.end(Buffer.from(await response.arrayBuffer()));
   } catch (error) {
     console.error("Server error:", error);
     res.writeHead(500, { "Content-Type": "text/plain" });
