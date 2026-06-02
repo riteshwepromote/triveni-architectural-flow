@@ -8,22 +8,16 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // Build for Node.js on Render/Vercel instead of Cloudflare Workers
     server: { entry: "server" },
   },
-  vite: {
-    ssr: {
-      external: ["@tanstack/router-core"],
-    },
-  },
   nitro: {
-    prerender: {
-      crawlLinks: false,
-      routes: ["/sitemap.xml"],
+    presets: ["node_server"],
+    output: {
+      dir: "dist/server",
+      publicDir: "dist/client",
     },
     routeRules: {
-      "/**": { cache: { maxAge: 60 } },
+      "/**": { cache: false },
     },
   },
 });
