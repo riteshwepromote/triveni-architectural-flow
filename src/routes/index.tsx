@@ -1,29 +1,50 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useLenis } from "@/hooks/useLenis";
+import { Cursor } from "@/components/triveni/Cursor";
+import { Loader } from "@/components/triveni/Loader";
+import { ScrollProgress } from "@/components/triveni/ScrollProgress";
+import { Navbar } from "@/components/triveni/Navbar";
+import { Hero } from "@/components/triveni/Hero";
+import { About } from "@/components/triveni/About";
+import { Collections } from "@/components/triveni/Collections";
+import { Showcase } from "@/components/triveni/Showcase";
+import { Textures } from "@/components/triveni/Textures";
+import { WhyTriveni } from "@/components/triveni/WhyTriveni";
+import { Gallery } from "@/components/triveni/Gallery";
+import { Testimonials } from "@/components/triveni/Testimonials";
+import { Contact } from "@/components/triveni/Contact";
+import { Footer } from "@/components/triveni/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Triveni — The Granite Studio" },
+      { name: "description", content: "Premium granite, marble and luxury surfaces. A patient practice of stone, light and architecture." },
+      { property: "og:title", content: "Triveni — The Granite Studio" },
+      { property: "og:description", content: "Premium granite, marble and luxury surfaces." },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  useLenis();
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="grain relative bg-background text-foreground antialiased">
+      <Loader />
+      <Cursor />
+      <ScrollProgress />
+      <Navbar />
+      <Hero />
+      <About />
+      <Collections />
+      <Showcase />
+      <Textures />
+      <WhyTriveni />
+      <Gallery />
+      <Testimonials />
+      <Contact />
+      <Footer />
+    </main>
   );
 }
